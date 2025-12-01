@@ -12,6 +12,7 @@ CHOICES=(
 
 CHOICE=$(gum choose "${CHOICES[@]}" --height 10 --header "Update manually-managed applications")
 
+# shellcheck source=/dev/null
 if [[ "$CHOICE" == "<< Back"* ]] || [[ -z "$CHOICE" ]]; then
 	# Don't update anything
 	echo ""
@@ -24,8 +25,8 @@ else
 	*) INSTALLER_FILE="$OMAKUB_PATH/install/terminal/app-$INSTALLER.sh" ;;
 	esac
 
-	source $INSTALLER_FILE && gum spin --spinner globe --title "Update completed!" -- sleep 3
+	source "$INSTALLER_FILE" && gum spin --spinner globe --title "Update completed!" -- sleep 3
 fi
 
 clear
-source $OMAKUB_PATH/bin/omakub
+source "$OMAKUB_PATH/bin/omakub"

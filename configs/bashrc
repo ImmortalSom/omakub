@@ -1,5 +1,7 @@
-source ~/.local/share/omakub/defaults/bash/rc
+export OMAKUB_PATH="$HOME/.local/share/omakub"
+export OMAKUB_CACHE="/var/cache/omakub"
 
+source "$OMAKUB_PATH/defaults/bash/rc"
 # Editor used by CLI
 export EDITOR="nvim"
 export SUDO_EDITOR="$EDITOR"

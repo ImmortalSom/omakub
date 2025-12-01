@@ -5,5 +5,5 @@ if [ $# -eq 0 ]; then
 else
 	SUB=$1
 fi
-
-[ -n "$SUB" ] && [ "$SUB" != "quit" ] && source $OMAKUB_PATH/bin/omakub-sub/$SUB.sh
+# shellcheck  source=/dev/null
+[ -n "$SUB" ] && [ "$SUB" != "quit" ] && source "$OMAKUB_PATH/bin/omakub-sub/$SUB.sh"

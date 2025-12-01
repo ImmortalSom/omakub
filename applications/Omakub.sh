@@ -8,7 +8,7 @@ Comment=Omakub Controls
 Exec=alacritty --config-file /home/$USER/.config/alacritty/pane.toml --class=Omakub --title=Omakub -e omakub
 Terminal=false
 Type=Application
-Icon=/home/$USER/.local/share/omakub/applications/icons/Omakub.png
+Icon=$OMAKUB_PATH/applications/icons/Omakub.png
 Categories=GTK;
 StartupNotify=false
 EOF

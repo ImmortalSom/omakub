@@ -1,11 +1,36 @@
 #!/bin/bash
 
-if [ ! -f /etc/apt/sources.list.d/github-cli.list ]; then
-    [ -f /usr/share/keyrings/githubcli-archive-keyring.gpg ] && sudo rm /usr/share/keyrings/githubcli-archive-keyring.gpg
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg status=none
-    sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
-fi
+# Display system information in the terminal
+omak_init() {
+    if [ ! -f /etc/apt/sources.list.d/github-cli.sources ] || [ ! -f /etc/apt/keyrings/githubcli-archive-keyring.gpg ]; then
+        omak_gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg githubcli-archive-keyring.gpg
+        printf "%s\n" \
+            "Types: deb" \
+            "URIs: https://cli.github.com/packages" \
+            "Suites: stable" \
+            "Components: main" \
+            "Signed-By: /etc/apt/keyrings/githubcli-archive-keyring.gpg" |
+            sudo tee /etc/apt/sources.list.d/github-cli.sources >/dev/null
+    fi
+}
 
-sudo apt update
-sudo apt install gh -y
+omak_update() {
+    sudo apt-get update
+}
+
+omak_cache() {
+    sudo apt-get --download-only install -y gh
+}
+
+omak_install() {
+    sudo apt-get install -y gh
+}
+
+case $1 in
+init | cache | install) "omak_${1}" ;;
+*)
+    omak_init
+    omak_update
+    omak_install
+    ;;
+esac

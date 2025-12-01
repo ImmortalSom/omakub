@@ -1,10 +1,20 @@
 #!/bin/bash
 
 # This script installs btop, a resource monitor that shows usage and stats for processor, memory, disks, network and processes.
-sudo apt install -y btop
+omak_cache() {
+    sudo apt-get --download-only install -y btop
+}
 
-# Use Omakub btop config
-mkdir -p ~/.config/btop/themes
-cp ~/.local/share/omakub/configs/btop.conf ~/.config/btop/btop.conf
-cp ~/.local/share/omakub/themes/tokyo-night/btop.theme ~/.config/btop/themes/tokyo-night.theme
+omak_install() {
+    sudo apt-get install -y btop
 
+    # Use Omakub btop config
+    install -D "$OMAKUB_PATH/configs/btop.conf" ~/.config/btop/btop.conf
+    install -D "$OMAKUB_PATH/themes/tokyo-night/btop.theme" ~/.config/btop/themes/tokyo-night.theme
+}
+
+case $1 in
+init) true ;;
+cache) omak_cache ;;
+*) omak_install ;;
+esac

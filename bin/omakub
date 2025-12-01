@@ -1,4 +1,8 @@
 #!/bin/bash
 
-source $OMAKUB_PATH/bin/omakub-sub/header.sh
-source $OMAKUB_PATH/bin/omakub-sub/menu.sh
+# Load OS release information
+. /etc/os-release
+
+source "$OMAKUB_PATH/install/helpers/all.sh"
+source "$OMAKUB_PATH/bin/omakub-sub/header.sh"
+source "$OMAKUB_PATH/bin/omakub-sub/menu.sh"

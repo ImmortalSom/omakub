@@ -1,8 +1,27 @@
 #!/bin/bash
 
-cd /tmp
-LOCALSEND_VERSION=$(curl -s "https://api.github.com/repos/localsend/localsend/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-wget -O localsend.deb "https://github.com/localsend/localsend/releases/latest/download/LocalSend-${LOCALSEND_VERSION}-linux-x86-64.deb"
-sudo apt install -y ./localsend.deb
-rm localsend.deb
-cd -
+omak_cache() {
+    local ARCH
+    ARCH=$(uname -m | sed -e 's/aarch64/arm-64/' -e 's/x86_64/x86-64/')
+    local tag
+    tag=$(ogh_tag "localsend/localsend")
+
+    gh_download "localsend/localsend" "LocalSend-${tag#v}-linux-${ARCH}.deb"
+}
+
+omak_install() {
+    local ARCH
+    ARCH=$(uname -m | sed -e 's/aarch64/arm-64/' -e 's/x86_64/x86-64/')
+    local tag
+    tag=$(ogh_tag "localsend/localsend")
+
+    releases_file=$(gh_download "localsend/localsend" "LocalSend-${tag#v}-linux-${ARCH}.deb")
+
+    sudo apt-get install -y "$releases_file"
+}
+
+case $1 in
+init) true ;;
+cache) omak_cache ;;
+*) omak_install ;;
+esac

@@ -1,4 +1,16 @@
 #!/bin/bash
 
 # Provides a system clipboard interface for Neovim under Wayland
-sudo apt install wl-clipboard
+omak_cache() {
+    sudo apt-get --download-only install -y wl-clipboard
+}
+
+omak_install() {
+    sudo apt-get install -y wl-clipboard
+}
+
+case $1 in
+init) true ;;
+cache) omak_cache ;;
+*) omak_install ;;
+esac
